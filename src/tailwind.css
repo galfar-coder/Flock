@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.title {
+    @apply text-saffron bg-transparent content-center;
+}
+
+:root {
+    @apply bg-black text-carolina-blue;
+}
