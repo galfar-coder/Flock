@@ -1,11 +1,97 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import 'tailwindcss';
 
-.title {
-    @apply text-saffron bg-transparent content-center;
+@source '../public/**/*.{hmtl,js,css}';
+
+@theme {
+    --color-*: initial;
+    --color-transparent: transparent;
+    --color-current-color: currentColor;
+    --color-light: #fbfcfd;
+    --color-primary-100: #005f8e;
+    --color-primary-200: #0081c1;
+    --color-primary-300: #00a3f4;
+    --color-accent-100: #004d74;
+    --color-accent-200: #004365;
+    --color-accent-300: #003955;
+    --color-background-100: #1c1f26;
+    --color-background-200: #16181d;
+    --color-background-300: #002c44;
+    --color-text-100: #fbfcfd;
+    --color-text-200: #eaeff5;
+    --color-text-300: #d9e3ec;
+
+    --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+    --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+
+    --font-sans: 'Quicksand', sans-serif;
+
 }
 
-:root {
-    @apply bg-black text-carolina-blue;
+@font-face {
+    font-family: 'Material Symbols Rounded';
+    src: url('/assets/fonts/Material-Symbols-Rounded.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+}
+
+@layer utilities {
+    :root {
+        /* CONTAINER */
+        --cont-max-w: 1440px;
+        --cont-px: 3vw;
+    
+        /* NAV HEIGHT */
+        --th-nav-height: calc(170px - 2%);
+        --th-nav-height-mobile: 80px;
+
+        @apply bg-background-100;
+    }
+    
+    .cs-container {
+        @apply mx-auto px-[var(--cont-px)] max-w-[var(--cont-max-w)];
+    }
+    
+    .material-symbols-rounded {
+        font-family: 'Material Symbols Rounded';
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
+
+    .servers-scroll::-webkit-scrollbar {
+        scrollbar-width: thin;
+    }
+
+    .servers-scroll::-webkit-scrollbar-thumb {
+        @apply bg-primary-100;
+        border-radius: 50px;
+    }
+
+    .servers-scroll::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    ::selection {
+        background-color: #00a3f4;
+        color: white;
+        text-shadow: none;
+    }
 }

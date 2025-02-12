@@ -1,11 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/tailwind.css">
-    <title>Flock Chat App</title>
+    <link rel="icon" href="/assets/icons/FlockLogo.png" type="image/x-icon">
+    <title>Flock</title>
 </head>
-<body>
-    <h1 class="text-3xl font-bold underline title">Hello world!</h1>
-    <h6>{{ title }}</h6>
+<body class="h-dvh overflow-hidden">
+    <div class="flex flex-col h-full text-light">
+        <!-- Top tabs -->
+        <div class="p-2">
+        </div>
+
+        <div class="flex flex-1 gap-4 min-h-0">
+            <!-- Left Sidebar -->
+            <div class="flex flex-col bg-background-200 rounded-2xl w-full max-w-[240px]">
+                <nav class="flex flex-col h-full">
+                    <div class="p-3 border-b border-background-100 rounded-t-2xl bg-accent-300">Dev server</div>
+                    <ul class="flex-1 p-2 overflow-y-auto">
+                        <!-- Channel List -->
+                        <li class="group hover:bg-background-300 p-2 rounded-lg cursor-pointer">
+                            <span class="inline-block transition-all group-hover:translate-x-2 duration-150 ease-in-out">
+                                # general
+                            </span>
+                        </li>
+                        <li class="group hover:bg-background-300 p-2 rounded-lg cursor-pointer">
+                            <span class="inline-block transition-all group-hover:translate-x-2 duration-150 ease-in-out">
+                                # announcements
+                            </span>
+                        </li>
+                        <li class="group hover:bg-background-300 p-2 rounded-lg cursor-pointer">
+                            <span class="inline-block transition-all group-hover:translate-x-2 duration-150 ease-in-out">
+                                # off-topic
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div class="flex flex-col flex-1 bg-background-200 rounded-2xl min-h-0">
+                <!-- Chat Header -->
+                <div class="flex justify-between items-center p-3 border-b border-background-200 rounded-t-2xl w-full bg-accent-100">
+                    <span># general</span>
+
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-text-light rotate-45" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M640-760v280l68 68q6 6 9 13.5t3 15.5v23q0 17-11.5 28.5T680-320H520v234q0 17-11.5 28.5T480-46q-17 0-28.5-11.5T440-86v-234H280q-17 0-28.5-11.5T240-360v-23q0-8 3-15.5t9-13.5l68-68v-280q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760Z"/></svg>
+                        <form action="" class="">
+                            <input type="text" class="bg-background-100 p-2 rounded-xl outline-0 text-sm transition-all duration-300 select-none" placeholder="Search messages">
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div class="flex flex-col flex-1 min-h-0">
+                    <!-- Scrollable Messages -->
+                    <div class="flex-1 p-2 overflow-y-auto">
+                        <div class="flex flex-col gap-2">
+                            <!-- Message Example -->
+                            <div class="group flex items-center gap-2 hover:bg-background-100 p-2 rounded-lg">
+                                <img src="/assets/img/avatar.jpg" alt="Profile" class="rounded-full w-10 h-10">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="font-medium">
+                                            Tope
+                                            <span class="ml-2 text-light/60 text-xs">06.02.25 14:32</span>
+                                        </h3>
+                                    </div>
+                                    <div class="text-light/90">Hello everyone! 👋</div>
+                                </div>
+                                <div class="flex justify-center items-center opacity-0 group-hover:opacity-100 p-2 rounded-xl group-hover:bg-accent-100">
+                                    <span class="material-symbols-rounded text-xl cursor-pointer">reply</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="mt-auto p-2">
+                        <form action="" class="relative flex gap-2">
+                            <div class="top-2 left-16 z-10 absolute overflow-hidden text-text-100/60 text-ellipsis whitespace-nowrap pointer-events-none select-none"><!-- Placeholder -->
+                                Message #general
+                            </div>
+                            <button class="flex justify-center items-center p-3 material-symbols-rounded text-xl cursor-pointer">attachment</button>
+                            <div role="textbox" aria-multiline="true" contenteditable="true" aria-autocomplete="list" spellcheck="true" aria-label="Type your message" class="relative flex-1 bg-background-100 p-2 rounded-xl outline-0 w-full overflow-hidden break-all text-wrap whitespace-normal transition-all duration-300 select-text"></div>
+                            <button type="submit" class="flex justify-center items-center bg-primary-100 hover:bg-primary-300 p-3 material-symbols-rounded rounded-xl text-white break-all transition-colors cursor-pointer">
+                                send
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Server List -->
+        <div class="p-4 overflow-x-auto servers-scroll">
+            <div class="flex space-x-2">
+                <!-- Server Icon -->
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-all duration-300 ease-fluid cursor-pointer">
+                </div>
+                
+                <!-- Repeat server items -->
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+                <div class="shrink-0">
+                    <img src="/assets/img/avatar.jpg" alt="Server" 
+                        class="border-2 hover:border-primary-300 border-transparent rounded-full size-12 hover:scale-105 transition-transform cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
