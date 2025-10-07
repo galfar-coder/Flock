@@ -1,9 +1,133 @@
 "use client";
 
-export default function GodDamn() {
+import { useState, useEffect } from "react";
+
+// Mock data generator
+
+export default function ChannelPage() {
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const mockMessages = [
+        {
+            id: 1,
+            author: "Sarah Chen",
+            avatar: "SC",
+            time: "9:45 AM",
+            content:
+                "Good morning team! Just a reminder that we have our sprint review at 2 PM today.",
+        },
+        {
+            id: 2,
+            author: "Mike Rodriguez",
+            avatar: "MR",
+            time: "9:47 AM",
+            content:
+                "Thanks for the reminder! I'll have the dashboard demo ready.",
+        },
+        {
+            id: 3,
+            author: "Emily Watson",
+            avatar: "EW",
+            time: "9:50 AM",
+            content:
+                "I just deployed the new authentication flow to staging. Would love to get some feedback before we merge.",
+        },
+        {
+            id: 4,
+            author: "David Kim",
+            avatar: "DK",
+            time: "9:52 AM",
+            content:
+                "I can test it right now. Do we have any specific test cases we should focus on?",
+        },
+        {
+            id: 5,
+            author: "Emily Watson",
+            avatar: "EW",
+            time: "9:53 AM",
+            content:
+                "Yeah! Mainly focus on the password reset flow and social login. Those were the trickiest parts.",
+        },
+        {
+            id: 6,
+            author: "Sarah Chen",
+            avatar: "SC",
+            time: "10:05 AM",
+            content:
+                "Great work everyone! The progress this week has been amazing. 🚀",
+        },
+        {
+            id: 7,
+            author: "Alex Thompson",
+            avatar: "AT",
+            time: "10:12 AM",
+            content:
+                "Quick question - has anyone looked into that performance issue on the search feature?",
+        },
+        {
+            id: 8,
+            author: "Mike Rodriguez",
+            avatar: "MR",
+            time: "10:15 AM",
+            content:
+                "I'm working on it now. Found the bottleneck - it was an N+1 query issue. Should have a fix by end of day.",
+        },
+        {
+            id: 9,
+            author: "Alex Thompson",
+            avatar: "AT",
+            time: "10:16 AM",
+            content: "Perfect! Let me know if you need any help with testing.",
+        },
+        {
+            id: 10,
+            author: "David Kim",
+            avatar: "DK",
+            time: "10:30 AM",
+            content:
+                "Auth flow looks solid! Just tested password reset and Google login - both working flawlessly. Nice work Emily! ✨",
+        },
+    ];
+
+    // Simulate loading messages
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessages(mockMessages);
+            setLoading(false);
+        }, 1500); // 1.5 second delay to show skeleton
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) {
+        return null; // Skeleton will show from Suspense in layout
+    }
+
     return (
-        <div>
-            <h1>Channel</h1>
+        <div className="flex-1 m-3 p-4 rounded-2xl overflow-y-auto">
+            <div className="space-y-4 max-w-4xl">
+                {messages.map((msg) => (
+                    <div
+                        key={msg.id}
+                        className="flex gap-3 px-2 py-1.5 rounded transition-colors"
+                    >
+                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-blue-500 to-purple-500 rounded-full w-10 h-10 font-semibold text-white">
+                            {msg.avatar}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="font-semibold">
+                                    {msg.author}
+                                </span>
+                                <span className="text-xs">{msg.time}</span>
+                            </div>
+                            <p className="text-sm break-words leading-relaxed">
+                                {msg.content}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

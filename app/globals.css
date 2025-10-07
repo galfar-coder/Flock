@@ -35,6 +35,9 @@
     --color-popover-foreground: var(--popover-foreground);
     --color-popover: var(--popover);
     --color-card-foreground: var(--card-foreground);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-background-300: var(--background-300);
     --color-card: var(--card);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -113,8 +116,14 @@
     --sidebar-border: rgba(255, 255, 255, 0.1);
     --sidebar-ring: #52525b;
 
-    --color-background-200: #16181d;
-    --color-background-300: #002c44;
+    --background-200: #16181d;
+    --background-300: #002c44;
+    --primary-100: #005f8e;
+    --primary-200: #0081c1;
+    --primary-300: #00a3f4;
+    --accent-100: #004d74;
+    --accent-200: #004365;
+    --accent-300: #003955;
 }
 
 @layer utilities {
