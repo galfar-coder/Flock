@@ -115,14 +115,14 @@ export default function ChannelPage() {
     }
 
     return (
-        <div className="flex-1 m-3 p-4 rounded-2xl overflow-y-auto">
-            <div className="space-y-4 max-w-4xl">
+        <div className="flex-1 bg-accent m-3 mr-0 p-4 rounded-2xl overflow-y-auto">
+            <div className="space-y-4">
                 {messages.map((msg) => (
                     <div
                         key={msg.id}
-                        className="flex gap-3 px-2 py-1.5 rounded transition-colors"
+                        className="flex gap-3 hover:bg-primary-100 px-2 py-1.5 rounded-lg transition-colors"
                     >
-                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-blue-500 to-purple-500 rounded-full w-10 h-10 font-semibold text-white">
+                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
                             {msg.avatar}
                         </div>
                         <div className="flex-1 min-w-0">

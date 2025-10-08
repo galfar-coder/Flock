@@ -24,16 +24,21 @@ export function ChannelsList() {
     }, []);
 
     return (
-        <div
-            ref={scrollRef}
-            className="flex items-center gap-3 p-3 border-accent border-t-2 overflow-x-auto overflow-y-hidden"
-        >
-            {[...Array(40)].map((_, i) => (
-                <div
-                    key={i}
-                    className="flex-shrink-0 bg-accent rounded-full size-15"
-                ></div>
-            ))}
+        <div className="flex items-center">
+            <div className="bg-accent p-3 rounded-bl-2xl">
+                <div className="bg-background rounded-full size-15"></div>
+            </div>
+            <div
+                ref={scrollRef}
+                className="relative flex items-center gap-3 p-3 border-accent border-t-2 overflow-x-auto overflow-y-hidden"
+            >
+                {[...Array(40)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="flex-shrink-0 bg-accent rounded-full size-15"
+                    ></div>
+                ))}
+            </div>
         </div>
     );
 }
