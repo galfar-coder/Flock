@@ -1,4 +1,7 @@
+"use client";
+
 import { ChannelHeader } from "@/components/app/channel-header/channel-header";
+import { ChannelsList } from "@/components/app/channels-list/channels-list";
 import { InputField } from "@/components/app/input/input";
 import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton";
 import { Sidebar } from "@/components/app/sidebar/sidebar";
@@ -10,7 +13,7 @@ export default function AppLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="flex flex-col p-3 h-screen min-h-dvh">
+        <section className="flex flex-col p-3 h-screen min-h-dvh overflow-hidden">
             <div className="flex rounded-t-2xl h-full overflow-hidden">
                 <Sidebar />
                 <div className="flex flex-col flex-1">
@@ -21,14 +24,7 @@ export default function AppLayout({
                     <InputField />
                 </div>
             </div>
-            <div className="flex justify-between items-center p-3 border-accent border-t-2 overflow-x-scroll">
-                {[...Array(20)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="bg-accent rounded-full size-15"
-                    ></div>
-                ))}
-            </div>
-        </div>
+            <ChannelsList />
+        </section>
     );
 }

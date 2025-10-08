@@ -1,93 +1,104 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 // Mock data generator
 
 export default function ChannelPage() {
-    const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
-    const mockMessages = [
+    const [messages, setMessages] = useState<
         {
-            id: 1,
-            author: "Sarah Chen",
-            avatar: "SC",
-            time: "9:45 AM",
-            content:
-                "Good morning team! Just a reminder that we have our sprint review at 2 PM today.",
-        },
-        {
-            id: 2,
-            author: "Mike Rodriguez",
-            avatar: "MR",
-            time: "9:47 AM",
-            content:
-                "Thanks for the reminder! I'll have the dashboard demo ready.",
-        },
-        {
-            id: 3,
-            author: "Emily Watson",
-            avatar: "EW",
-            time: "9:50 AM",
-            content:
-                "I just deployed the new authentication flow to staging. Would love to get some feedback before we merge.",
-        },
-        {
-            id: 4,
-            author: "David Kim",
-            avatar: "DK",
-            time: "9:52 AM",
-            content:
-                "I can test it right now. Do we have any specific test cases we should focus on?",
-        },
-        {
-            id: 5,
-            author: "Emily Watson",
-            avatar: "EW",
-            time: "9:53 AM",
-            content:
-                "Yeah! Mainly focus on the password reset flow and social login. Those were the trickiest parts.",
-        },
-        {
-            id: 6,
-            author: "Sarah Chen",
-            avatar: "SC",
-            time: "10:05 AM",
-            content:
-                "Great work everyone! The progress this week has been amazing. 🚀",
-        },
-        {
-            id: 7,
-            author: "Alex Thompson",
-            avatar: "AT",
-            time: "10:12 AM",
-            content:
-                "Quick question - has anyone looked into that performance issue on the search feature?",
-        },
-        {
-            id: 8,
-            author: "Mike Rodriguez",
-            avatar: "MR",
-            time: "10:15 AM",
-            content:
-                "I'm working on it now. Found the bottleneck - it was an N+1 query issue. Should have a fix by end of day.",
-        },
-        {
-            id: 9,
-            author: "Alex Thompson",
-            avatar: "AT",
-            time: "10:16 AM",
-            content: "Perfect! Let me know if you need any help with testing.",
-        },
-        {
-            id: 10,
-            author: "David Kim",
-            avatar: "DK",
-            time: "10:30 AM",
-            content:
-                "Auth flow looks solid! Just tested password reset and Google login - both working flawlessly. Nice work Emily! ✨",
-        },
-    ];
+            id: number;
+            author: string;
+            avatar: string;
+            time: string;
+            content: string;
+        }[]
+    >([]);
+    const mockMessages = useMemo(() => {
+        return [
+            {
+                id: 1,
+                author: "Sarah Chen",
+                avatar: "SC",
+                time: "9:45 AM",
+                content:
+                    "Good morning team! Just a reminder that we have our sprint review at 2 PM today.",
+            },
+            {
+                id: 2,
+                author: "Mike Rodriguez",
+                avatar: "MR",
+                time: "9:47 AM",
+                content:
+                    "Thanks for the reminder! I'll have the dashboard demo ready.",
+            },
+            {
+                id: 3,
+                author: "Emily Watson",
+                avatar: "EW",
+                time: "9:50 AM",
+                content:
+                    "I just deployed the new authentication flow to staging. Would love to get some feedback before we merge.",
+            },
+            {
+                id: 4,
+                author: "David Kim",
+                avatar: "DK",
+                time: "9:52 AM",
+                content:
+                    "I can test it right now. Do we have any specific test cases we should focus on?",
+            },
+            {
+                id: 5,
+                author: "Emily Watson",
+                avatar: "EW",
+                time: "9:53 AM",
+                content:
+                    "Yeah! Mainly focus on the password reset flow and social login. Those were the trickiest parts.",
+            },
+            {
+                id: 6,
+                author: "Sarah Chen",
+                avatar: "SC",
+                time: "10:05 AM",
+                content:
+                    "Great work everyone! The progress this week has been amazing. 🚀",
+            },
+            {
+                id: 7,
+                author: "Alex Thompson",
+                avatar: "AT",
+                time: "10:12 AM",
+                content:
+                    "Quick question - has anyone looked into that performance issue on the search feature?",
+            },
+            {
+                id: 8,
+                author: "Mike Rodriguez",
+                avatar: "MR",
+                time: "10:15 AM",
+                content:
+                    "I'm working on it now. Found the bottleneck - it was an N+1 query issue. Should have a fix by end of day.",
+            },
+            {
+                id: 9,
+                author: "Alex Thompson",
+                avatar: "AT",
+                time: "10:16 AM",
+                content:
+                    "Perfect! Let me know if you need any help with testing.",
+            },
+            {
+                id: 10,
+                author: "David Kim",
+                avatar: "DK",
+                time: "10:30 AM",
+                content:
+                    "Auth flow looks solid! Just tested password reset and Google login - both working flawlessly. Nice work Emily! ✨",
+            },
+        ];
+    }, []);
 
     // Simulate loading messages
     useEffect(() => {
@@ -97,7 +108,7 @@ export default function ChannelPage() {
         }, 1500); // 1.5 second delay to show skeleton
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [mockMessages]);
 
     if (loading) {
         return null; // Skeleton will show from Suspense in layout
