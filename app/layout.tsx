@@ -19,7 +19,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${zalandoSans.className} antialiased`}>
+            <body
+                className={`${zalandoSans.className} antialiased`}
+                suppressHydrationWarning
+            >
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"

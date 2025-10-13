@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { io } from "socket.io-client";
 
 // Mock data generator
+
+const socket = io("ws://localhost:6942");
 
 export default function ChannelPage() {
     const [loading, setLoading] = useState(true);
@@ -99,6 +102,18 @@ export default function ChannelPage() {
             },
         ];
     }, []);
+
+    socket.on("message", (data) => {
+        console.log(data);
+        messages.push({
+            id: messages.length + 1,
+            author: "anonymous",
+            avatar: "A",
+            time: "now",
+            content: data,
+        });
+        setMessages(messages);
+    });
 
     // Simulate loading messages
     useEffect(() => {
