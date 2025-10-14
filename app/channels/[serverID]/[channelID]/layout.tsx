@@ -5,6 +5,8 @@ import { ChannelsList } from "@/components/app/channels-list/channels-list";
 import { InputField } from "@/components/app/input/input";
 import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton";
 import { Sidebar } from "@/components/app/sidebar/sidebar";
+import UserList from "@/components/app/users-list/users";
+import { X } from "lucide-react";
 import { Suspense } from "react";
 
 export default function AppLayout({
@@ -14,6 +16,16 @@ export default function AppLayout({
 }>) {
     return (
         <section className="flex flex-col p-3 h-screen min-h-dvh overflow-hidden">
+            <div className="flex items-center gap-2 w-full">
+                <div className="relative flex justify-left items-center bg-accent mb-2 p-2 rounded-lg w-full max-w-32 text-sm">
+                    MesosElite
+                    <X className="right-2 absolute" size={16} />
+                </div>
+                <div className="relative flex justify-left items-center bg-accent mb-2 p-2 rounded-lg w-full max-w-40 text-sm">
+                    MesosElite
+                    <X className="right-2 absolute" size={16} />
+                </div>
+            </div>
             <div className="flex rounded-t-2xl h-full overflow-hidden">
                 <Sidebar />
                 <div className="flex flex-col flex-1">
@@ -23,6 +35,7 @@ export default function AppLayout({
                     </Suspense>
                     <InputField />
                 </div>
+                <UserList />
             </div>
             <ChannelsList />
         </section>

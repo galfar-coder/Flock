@@ -1,4 +1,4 @@
-import { Bell, Hash, Pin, Search, Users, Eye } from "lucide-react";
+import { Bell, Hash, Pin, Users, Eye } from "lucide-react";
 
 export function ChannelHeader() {
     return (
@@ -17,7 +17,6 @@ export function ChannelHeader() {
                 <Eye className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
                 <Bell className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
                 <Pin className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
-                <Search className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
                 <Users className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
             </div>
         </div>

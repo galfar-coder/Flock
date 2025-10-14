@@ -16,7 +16,7 @@ export function InputField() {
     }
 
     return (
-        <div className="flex items-center gap-2 bg-accent mb-0 ml-4 rounded-t-xl overflow-hidden">
+        <div className="flex items-center gap-2 bg-accent mb-0 ml-4 rounded-tl-xl overflow-hidden">
             <div className="flex items-center pl-4">
                 <button className="hover:bg-primary-300 p-3 rounded-full transition-colors">
                     <Plus size={20} />
