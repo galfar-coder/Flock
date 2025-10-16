@@ -38,8 +38,10 @@
     --color-primary-100: var(--primary-100);
     --color-primary-200: var(--primary-200);
     --color-primary-300: var(--primary-300);
-    --color-background-300: var(--background-300);
+    --color-background-app: var(--background-app);
+    --color-background-chat: var(--background-chat);
     --color-card: var(--card);
+    --color-subtle: var(--border-subtle);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -97,7 +99,7 @@
     --secondary-foreground: #fafafa;
     --muted: #27272a;
     --muted-foreground: #a1a1aa;
-    --accent: #27272a;
+    --accent: #16181d;
     --accent-foreground: #fafafa;
     --destructive: #dc2626;
     --border: rgba(255, 255, 255, 0.1);
@@ -117,11 +119,12 @@
     --sidebar-border: rgba(255, 255, 255, 0.1);
     --sidebar-ring: #52525b;
 
-    --background-200: #16181d;
-    --background-300: #002c44;
+    --background-chat: #16181d;
+    --background-app: #1c1f26;
+    --border-subtle: #52587a;
     --primary-100: #005f8e;
     --primary-200: #0081c1;
-    --primary-300: #00a3f4;
+    --primary-300: #46aec5;
     --accent-100: #004d74;
     --accent-200: #004365;
     --accent-300: #003955;
@@ -131,6 +134,10 @@
     .cs-container {
         @apply mx-auto px-[var(--cont-px)] max-w-[var(--cont-max-w)];
     }
+
+    .border-app {
+        @apply border border-subtle/20 shadow-lg;
+    }
 }
 
 @layer base {
@@ -139,5 +146,9 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    * ::selection {
+        @apply bg-primary-300 text-background;
     }
 }

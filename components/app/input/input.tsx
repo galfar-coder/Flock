@@ -16,26 +16,26 @@ export function InputField() {
     }
 
     return (
-        <div className="flex items-center gap-2 bg-accent mb-0 ml-4 rounded-tl-xl overflow-hidden">
-            <div className="flex items-center pl-4">
+        <div className="flex items-center gap-2 bg-background-chat p-2">
+            <div className="flex items-center">
                 <button className="hover:bg-primary-300 p-3 rounded-full transition-colors">
                     <Plus size={20} />
                 </button>
             </div>
             <Input
-                className="relative flex-1 !m-0 focus:!border-primary-300 !ring-0 h-12 !text-lg transition-colors ease-fluid"
+                className="relative flex-1 !bg-background-app !m-0 !border-app focus:!border-primary-300 rounded-xl !ring-0 h-12 !text-lg transition-colors ease-fluid"
                 placeholder="Send message..."
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
-            <div className="flex justify-between items-center p-4">
-                <div
-                    className="hover:bg-primary-300 p-4 rounded-full transition-colors"
+            <div className="flex justify-between items-center">
+                <button
+                    className="hover:bg-primary-300 p-3 rounded-full transition-colors"
                     onClick={() => sendMessage()}
                 >
-                    <Send className="" size={20} />
-                </div>
+                    <Send size={20} />
+                </button>
             </div>
         </div>
     );

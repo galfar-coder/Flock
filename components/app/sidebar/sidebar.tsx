@@ -9,9 +9,9 @@ export function Sidebar() {
     ];
 
     return (
-        <div className="flex flex-col bg-accent w-60 text-gray-100">
+        <div className="flex flex-col bg-background-chat p-2 border-app rounded-2xl w-60 text-gray-100">
             {/* Server/Workspace Header */}
-            <div className="flex justify-between items-center shadow-sm px-4 border-gray-700 border-b h-12">
+            <div className="flex justify-between items-center shadow-sm px-4 border-subtle/20 border-b h-12">
                 <span className="font-semibold text-sm">My Workspace</span>
                 <MoreVertical className="w-4 h-4 text-gray-400 hover:text-gray-200 cursor-pointer" />
             </div>
@@ -52,7 +52,7 @@ export function Sidebar() {
             </div>
 
             {/* User Section */}
-            <div className="flex items-center bg-background-200 px-2 border-gray-700 border-t h-14">
+            <div className="flex items-center bg-background-200 px-2 border-gray-700 border-t h-28">
                 <div className="flex flex-1 items-center gap-2">
                     <div className="flex justify-center items-center bg-primary-300 rounded-full w-8 h-8 font-semibold text-white text-sm">
                         JD

@@ -1,5 +1,6 @@
 "use client";
 
+import { InputField } from "@/components/app/input/input";
 import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
@@ -40,7 +41,6 @@ export default function ChannelPage() {
 
             messageTimestamps.current.push(now);
 
-            // Generate timestamp
             const timeStr = new Date().toLocaleTimeString("en-US", {
                 hour: "numeric",
                 minute: "2-digit",
@@ -84,37 +84,47 @@ export default function ChannelPage() {
     }
 
     return (
-        <div className="flex-1 bg-accent m-3 p-4 rounded-2xl overflow-y-auto snap-end">
-            {messages.length === 0 ? (
-                <div className="flex justify-center items-center h-full text-gray-500">
-                    <p>No messages yet. Start typing to see messages appear!</p>
-                </div>
-            ) : (
-                <div className="space-y-4">
-                    {messages.map((msg) => (
-                        <div
-                            key={msg.id}
-                            className="flex gap-3 hover:bg-primary-100 px-2 py-1.5 rounded-lg transition-colors"
-                        >
-                            <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
-                                {msg.avatar}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-semibold">
-                                        {msg.author}
-                                    </span>
-                                    <span className="text-xs">{msg.time}</span>
+        <div className="flex flex-col bg-background-chat border-app rounded-2xl w-full h-full overflow-hidden">
+            <div className="flex-1 p-4 min-h-0 overflow-y-auto">
+                {messages.length === 0 ? (
+                    <div className="flex justify-center items-center h-full text-gray-500">
+                        <p>
+                            No messages yet. Start typing to see messages
+                            appear!
+                        </p>
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {messages.map((msg) => (
+                            <div
+                                key={msg.id}
+                                className="flex gap-3 hover:bg-primary-100 px-2 py-1.5 rounded-lg transition-colors"
+                            >
+                                <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
+                                    {msg.avatar}
                                 </div>
-                                <p className="text-sm break-words leading-relaxed">
-                                    {msg.content}
-                                </p>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="font-semibold">
+                                            {msg.author}
+                                        </span>
+                                        <span className="text-xs">
+                                            {msg.time}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm break-words leading-relaxed">
+                                        {msg.content}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
-            )}
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                )}
+            </div>
+            <div className="flex-shrink-0 pb-2 w-full">
+                <InputField />
+            </div>
         </div>
     );
 }
