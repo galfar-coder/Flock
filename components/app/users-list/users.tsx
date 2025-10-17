@@ -1,6 +1,6 @@
 export default function UserList() {
     return (
-        <div className="flex-col bg-background-chat border-app rounded-2xl w-60 h-full text-gray-100">
+        <div className="hidden md:flex md:flex-col bg-background-chat border-app rounded-2xl w-60 h-full text-gray-100">
             <div className="flex-col items-start p-4">
                 <span className="mb-4 text-gray-400 text-sm uppercase tracking-wide">
                     Leader - 1

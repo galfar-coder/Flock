@@ -17,6 +17,9 @@ export default function ChannelPage() {
             content: string;
         }[]
     >([]);
+    const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(
+        null
+    );
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const messageTimestamps = useRef<number[]>([]);
@@ -79,6 +82,12 @@ export default function ChannelPage() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    // Check if message should show header (avatar, name, timestamp)
+    const shouldShowHeader = (index: number) => {
+        if (index === 0) return true;
+        return messages[index].author !== messages[index - 1].author;
+    };
+
     if (loading) {
         return null;
     }
@@ -94,30 +103,61 @@ export default function ChannelPage() {
                         </p>
                     </div>
                 ) : (
-                    <div className="space-y-4">
-                        {messages.map((msg) => (
-                            <div
-                                key={msg.id}
-                                className="flex gap-3 hover:bg-primary-100 px-2 py-1.5 rounded-lg transition-colors"
-                            >
-                                <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
-                                    {msg.avatar}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold">
-                                            {msg.author}
-                                        </span>
-                                        <span className="text-xs">
-                                            {msg.time}
-                                        </span>
+                    <div className="space-y-0.5">
+                        {messages.map((msg, index) => {
+                            const showHeader = shouldShowHeader(index);
+                            return (
+                                <div
+                                    key={msg.id}
+                                    className={`group flex gap-3 hover:bg-primary-100/10 px-2 rounded-lg transition-colors ${
+                                        showHeader ? "mt-4 py-1.5" : "py-0.5"
+                                    }`}
+                                    onMouseEnter={() =>
+                                        setHoveredMessageId(msg.id)
+                                    }
+                                    onMouseLeave={() =>
+                                        setHoveredMessageId(null)
+                                    }
+                                >
+                                    {/* Avatar - show only for first message in group */}
+                                    {showHeader ? (
+                                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
+                                            {msg.avatar}
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-shrink-0 justify-center items-center w-10">
+                                            {/* Timestamp shows on hover for grouped messages */}
+                                            <span
+                                                className={`text-xs text-gray-400 transition-opacity ${
+                                                    hoveredMessageId === msg.id
+                                                        ? "opacity-100"
+                                                        : "opacity-0"
+                                                }`}
+                                            >
+                                                {msg.time}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex-1 min-w-0">
+                                        {/* Header - show only for first message in group */}
+                                        {showHeader && (
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="font-semibold">
+                                                    {msg.author}
+                                                </span>
+                                                <span className="text-gray-400 text-xs">
+                                                    {msg.time}
+                                                </span>
+                                            </div>
+                                        )}
+                                        <p className="text-sm break-words leading-relaxed">
+                                            {msg.content}
+                                        </p>
                                     </div>
-                                    <p className="text-sm break-words leading-relaxed">
-                                        {msg.content}
-                                    </p>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                         <div ref={messagesEndRef} />
                     </div>
                 )}

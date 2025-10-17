@@ -4,6 +4,7 @@ import { ChannelHeader } from "@/components/app/channel-header/channel-header";
 import { ChannelsList } from "@/components/app/channels-list/channels-list";
 import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton";
 import { Sidebar } from "@/components/app/sidebar/sidebar";
+import { AddTab } from "@/components/app/tab/add-tab";
 import { Tab } from "@/components/app/tab/tab";
 import UserList from "@/components/app/users-list/users";
 import { Suspense } from "react";
@@ -20,6 +21,7 @@ export default function AppLayout({
         >
             <div className="flex items-center gap-2 w-full">
                 <Tab />
+                <AddTab />
             </div>
             <div className="flex gap-3 rounded-t-2xl h-full overflow-hidden">
                 <Sidebar />

@@ -1,4 +1,5 @@
-import { Hash, MoreVertical, Settings, Users } from "lucide-react";
+import { Hash, MoreVertical, Users } from "lucide-react";
+import { UserControls } from "./user-controls";
 
 export function Sidebar() {
     const channels = [
@@ -9,65 +10,53 @@ export function Sidebar() {
     ];
 
     return (
-        <div className="flex flex-col bg-background-chat p-2 border-app rounded-2xl w-60 text-gray-100">
-            {/* Server/Workspace Header */}
-            <div className="flex justify-between items-center shadow-sm px-4 border-subtle/20 border-b h-12">
-                <span className="font-semibold text-sm">My Workspace</span>
-                <MoreVertical className="w-4 h-4 text-gray-400 hover:text-gray-200 cursor-pointer" />
-            </div>
+        <div className="hidden md:flex md:flex-col gap-3 h-full">
+            <div className="flex flex-col bg-background-chat p-2 border-app rounded-2xl w-72 h-full text-gray-100">
+                {/* Server/Workspace Header */}
+                <div className="flex justify-between items-center shadow-sm px-4 border-subtle/20 border-b h-12">
+                    <span className="font-semibold text-sm">My Workspace</span>
+                    <MoreVertical className="w-4 h-4 text-gray-400 hover:text-gray-200 cursor-pointer" />
+                </div>
 
-            {/* Channel List */}
-            <div className="flex-1 px-2 py-3 overflow-y-auto">
-                <div className="mb-4">
-                    <div className="mb-1 px-2 font-semibold text-gray-400 text-xs uppercase tracking-wide">
-                        Text Channels
-                    </div>
-                    {channels.map((channel) => (
-                        <div
-                            key={channel.id}
-                            className="group flex justify-between items-center hover:bg-gray-700 mb-0.5 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer transtion-all"
-                        >
-                            <div className="flex items-center gap-2">
-                                <Hash className="w-4 h-4 text-gray-400" />
-                                <span className="text-sm">{channel.name}</span>
+                {/* Channel List */}
+                <div className="flex-1 px-2 py-3 overflow-y-auto">
+                    <div className="mb-4">
+                        <div className="mb-1 px-2 font-semibold text-gray-400 text-xs uppercase tracking-wide">
+                            Text Channels
+                        </div>
+                        {channels.map((channel) => (
+                            <div
+                                key={channel.id}
+                                className="group flex justify-between items-center hover:bg-background-app mb-0.5 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer transtion-all"
+                            >
+                                <div className="flex items-center gap-2">
+                                    <Hash className="w-4 h-4 text-gray-400" />
+                                    <span className="text-sm">
+                                        {channel.name}
+                                    </span>
+                                </div>
+                                {channel.unread > 0 && (
+                                    <span className="bg-primary-300 px-1.5 py-0.5 rounded-full min-w-5 text-background text-xs text-center">
+                                        {channel.unread}
+                                    </span>
+                                )}
                             </div>
-                            {channel.unread > 0 && (
-                                <span className="bg-red-500 px-1.5 py-0.5 rounded-full min-w-5 text-white text-xs text-center">
-                                    {channel.unread}
-                                </span>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                <div>
-                    <div className="mb-1 px-2 font-semibold text-gray-400 text-xs uppercase tracking-wide">
-                        Voice Channels
+                        ))}
                     </div>
-                    <div className="flex items-center gap-2 hover:bg-gray-700 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer">
-                        <Users className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm">General Voice</span>
+
+                    <div>
+                        <div className="mb-1 px-2 font-semibold text-gray-400 text-xs uppercase tracking-wide">
+                            Voice Channels
+                        </div>
+                        <div className="flex items-center gap-2 hover:bg-gray-700 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer">
+                            <Users className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm">General Voice</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
             {/* User Section */}
-            <div className="flex items-center bg-background-200 px-2 border-gray-700 border-t h-28">
-                <div className="flex flex-1 items-center gap-2">
-                    <div className="flex justify-center items-center bg-primary-300 rounded-full w-8 h-8 font-semibold text-white text-sm">
-                        JD
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm truncate">
-                            John Doe
-                        </div>
-                        <div className="text-gray-400 text-xs">Online</div>
-                    </div>
-                </div>
-                <div className="flex gap-1">
-                    <Settings className="w-4 h-4 text-gray-400 hover:text-gray-200 cursor-pointer" />
-                </div>
-            </div>
+            <UserControls />
         </div>
     );
 }
