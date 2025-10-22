@@ -49,6 +49,11 @@
 
     --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
     --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+
+    --animate-float: float 3s ease-in-out infinite;
+    --animate-glitch-1: glitch-1 2.5s linear infinite;
+    --animate-glitch-2: glitch-2 3s linear infinite;
+    --animate-shake: horizontal-shaking 300ms ease-out;
 }
 
 :root {
@@ -130,6 +135,71 @@
     --accent-300: #003955;
 }
 
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+@keyframes glitch-1 {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-5px, 5px);
+    }
+    40% {
+        transform: translate(-5px, -5px);
+    }
+    60% {
+        transform: translate(5px, 5px);
+    }
+    80% {
+        transform: translate(5px, -5px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+@keyframes glitch-2 {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(5px, -5px);
+    }
+    50% {
+        transform: translate(-5px, 5px);
+    }
+    75% {
+        transform: translate(5px, 5px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes horizontal-shaking {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(5px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
 @layer utilities {
     .cs-container {
         @apply mx-auto px-[var(--cont-px)] max-w-[var(--cont-max-w)];
@@ -137,6 +207,10 @@
 
     .border-app {
         @apply border border-subtle/20 shadow-lg;
+    }
+
+    .login-inputs {
+        @apply focus:!border-primary-300 focus:!ring-0 w-full transition-colors ease-fluid;
     }
 }
 

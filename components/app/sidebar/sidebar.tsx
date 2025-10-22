@@ -1,5 +1,6 @@
-import { Hash, MoreVertical, Users } from "lucide-react";
+import { Hash, MoreVertical } from "lucide-react";
 import { UserControls } from "./user-controls";
+import { VoiceChannel } from "./channels/voice-channel";
 
 export function Sidebar() {
     const channels = [
@@ -14,7 +15,7 @@ export function Sidebar() {
             <div className="flex flex-col bg-background-chat p-2 border-app rounded-2xl w-72 h-full text-gray-100">
                 {/* Server/Workspace Header */}
                 <div className="flex justify-between items-center shadow-sm px-4 border-subtle/20 border-b h-12">
-                    <span className="font-semibold text-sm">My Workspace</span>
+                    <span className="font-semibold text-sm">My Server</span>
                     <MoreVertical className="w-4 h-4 text-gray-400 hover:text-gray-200 cursor-pointer" />
                 </div>
 
@@ -44,15 +45,7 @@ export function Sidebar() {
                         ))}
                     </div>
 
-                    <div>
-                        <div className="mb-1 px-2 font-semibold text-gray-400 text-xs uppercase tracking-wide">
-                            Voice Channels
-                        </div>
-                        <div className="flex items-center gap-2 hover:bg-gray-700 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer">
-                            <Users className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm">General Voice</span>
-                        </div>
-                    </div>
+                    <VoiceChannel />
                 </div>
             </div>
             {/* User Section */}

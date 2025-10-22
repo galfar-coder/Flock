@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { BellOff, MailOpen } from "lucide-react";
 
 export function ChannelsList() {
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,14 +52,18 @@ export function ChannelsList() {
     return (
         <div className="relative flex items-center bg-background-chat border-app rounded-2xl overflow-hidden">
             {/* Channels icon panel */}
-            <div className="z-20 bg-background-app p-3 border-r border-r-subtle/20 rounded-r-2xl">
+            <div className="z-20 flex items-center gap-2 bg-background-app p-3 border-r border-r-subtle/20 rounded-r-2xl">
                 <div className="bg-background-chat rounded-full size-15"></div>
+                <div className="flex flex-col items-center gap-4 pl-3 border-l border-l-subtle/20 h-full text-muted-foreground">
+                    <BellOff size={20} />
+                    <MailOpen size={20} />
+                </div>
             </div>
 
             {/* Scrollable list */}
             <div
                 ref={scrollRef}
-                className="relative flex items-center gap-3 p-3 overflow-x-auto overflow-y-hidden touch-auto cursor-grab select-none"
+                className="relative flex items-center gap-3 p-4 overflow-x-auto overflow-y-hidden touch-auto cursor-grab select-none"
                 onMouseDown={handleMouseDown}
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={handleMouseUp}

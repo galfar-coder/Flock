@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import AuthProvider from "@/components/auth/auth-provider";
 
 const zalandoSans = localFont({
     src: "./fonts/ZalandoSans-Regular.woff2",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     description: "Modern & Different Chat app",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -23,14 +24,17 @@ export default function RootLayout({
                 className={`${zalandoSans.className} antialiased`}
                 suppressHydrationWarning
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                </ThemeProvider>
+                {/* @ts-expect-error - SessionProvider session prop type issue */}
+                <AuthProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                    </ThemeProvider>
+                </AuthProvider>
             </body>
         </html>
     );

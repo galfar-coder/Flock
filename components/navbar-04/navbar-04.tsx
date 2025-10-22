@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
+import Link from "next/link";
 
 const Navbar04Page = () => {
     return (
-        <nav className="fixed top-6 inset-x-4 h-16 bg-background border dark:border-slate-700/70 max-w-(--breakpoint-xl) mx-auto rounded-full">
+        <nav className="fixed top-6 inset-x-4 h-16 bg-transparent backdrop-blur-lg border dark:border-slate-700/70 max-w-(--breakpoint-xl) mx-auto rounded-full">
             <div className="flex justify-between items-center mx-auto px-4 h-full">
                 <Logo />
 
@@ -17,7 +18,7 @@ const Navbar04Page = () => {
                         variant="outline"
                         className="hidden sm:inline-flex rounded-full cursor-pointer"
                     >
-                        Log In
+                        <Link href={"/login"}> Log In</Link>
                     </Button>
                     <Button className="rounded-full cursor-pointer">
                         Get Started
