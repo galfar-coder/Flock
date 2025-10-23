@@ -1,6 +1,7 @@
-import { Hash, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { UserControls } from "./user-controls";
 import { VoiceChannel } from "./channels/voice-channel";
+import { TextChannel } from "./channels/text-channel";
 
 export function Sidebar() {
     const channels = [
@@ -26,22 +27,15 @@ export function Sidebar() {
                             Text Channels
                         </div>
                         {channels.map((channel) => (
-                            <div
+                            <TextChannel
                                 key={channel.id}
-                                className="group flex justify-between items-center hover:bg-background-app mb-0.5 px-2 py-1.5 rounded-xl hover:translate-x-1.5 duration-300 ease-fluid cursor-pointer transtion-all"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <Hash className="w-4 h-4 text-gray-400" />
-                                    <span className="text-sm">
-                                        {channel.name}
-                                    </span>
-                                </div>
-                                {channel.unread > 0 && (
-                                    <span className="bg-primary-300 px-1.5 py-0.5 rounded-full min-w-5 text-background text-xs text-center">
-                                        {channel.unread}
-                                    </span>
-                                )}
-                            </div>
+                                channel={{
+                                    serverId: 1,
+                                    channelId: channel.id,
+                                    name: channel.name,
+                                    unread: channel.unread,
+                                }}
+                            />
                         ))}
                     </div>
 

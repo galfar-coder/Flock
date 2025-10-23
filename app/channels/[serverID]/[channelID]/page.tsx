@@ -2,20 +2,19 @@
 
 import { InputField } from "@/components/app/input/input";
 import { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
 import { IMessage } from "@/server/interfaces";
 import { usePathname } from "next/navigation";
-
-const socket = io("ws://localhost:6942");
+import { TabManager } from "@/components/websocket/tab-manager";
 
 export default function ChannelPage() {
     const pathname = usePathname();
     const serverId = pathname.split("/")[2];
     const channelId = pathname.split("/")[3];
+    const userId = "1761";
 
     const [loading, setLoading] = useState(true);
     const [messages, setMessages] = useState<IMessage[]>([]);
-    const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(
+    const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(
         null
     );
     const [rateLimitError, setRateLimitError] = useState<string>("");
@@ -29,62 +28,56 @@ export default function ChannelPage() {
     const MAX_MESSAGES = 10;
     const TIME_WINDOW_MS = 5000; // 1 second (change to 60000 for 1 minute, 30000 for 30 seconds, etc.)
 
+    const handleMessage = (data: IMessage) => {
+        const now = Date.now();
+
+        // Remove timestamps older than the time window
+        messageTimestamps.current = messageTimestamps.current.filter(
+            (timestamp) => now - timestamp < TIME_WINDOW_MS
+        );
+
+        if (
+            messageTimestamps.current.length >= MAX_MESSAGES &&
+            data.author.id === userId
+        ) {
+            // Format time window for display
+            const timeText =
+                TIME_WINDOW_MS >= 1000
+                    ? `${TIME_WINDOW_MS / 1000} second${
+                          TIME_WINDOW_MS > 1000 ? "s" : ""
+                      }`
+                    : `${TIME_WINDOW_MS}ms`;
+
+            setRateLimitError(
+                `You can only send ${MAX_MESSAGES} messages per ${timeText}`
+            );
+            setIsRateLimited(true);
+
+            // Clear any existing timer
+            if (rateLimitTimerRef.current) {
+                clearTimeout(rateLimitTimerRef.current);
+            }
+
+            // Auto-hide error and re-enable input after the time window
+            rateLimitTimerRef.current = setTimeout(() => {
+                setRateLimitError("");
+                setIsRateLimited(false);
+            }, TIME_WINDOW_MS);
+
+            return;
+        }
+
+        messageTimestamps.current.push(now);
+        setMessages((prev) => [...prev, data]);
+    };
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
         }, 500);
 
-        socket.emit("join_channel", {
-            serverId: serverId,
-            channelId: channelId,
-            userId: "1761",
-        });
-
-        const handleMessage = (data: IMessage) => {
-            const now = Date.now();
-
-            // Remove timestamps older than the time window
-            messageTimestamps.current = messageTimestamps.current.filter(
-                (timestamp) => now - timestamp < TIME_WINDOW_MS
-            );
-
-            if (messageTimestamps.current.length >= MAX_MESSAGES) {
-                // Format time window for display
-                const timeText =
-                    TIME_WINDOW_MS >= 1000
-                        ? `${TIME_WINDOW_MS / 1000} second${
-                              TIME_WINDOW_MS > 1000 ? "s" : ""
-                          }`
-                        : `${TIME_WINDOW_MS}ms`;
-
-                setRateLimitError(
-                    `You can only send ${MAX_MESSAGES} messages per ${timeText}`
-                );
-                setIsRateLimited(true);
-
-                // Clear any existing timer
-                if (rateLimitTimerRef.current) {
-                    clearTimeout(rateLimitTimerRef.current);
-                }
-
-                // Auto-hide error and re-enable input after the time window
-                rateLimitTimerRef.current = setTimeout(() => {
-                    setRateLimitError("");
-                    setIsRateLimited(false);
-                }, TIME_WINDOW_MS);
-
-                return;
-            }
-
-            messageTimestamps.current.push(now);
-            setMessages((prev) => [...prev, data]);
-        };
-
-        socket.on("message", handleMessage);
-
         return () => {
             clearTimeout(timer);
-            socket.off("message", handleMessage);
             if (rateLimitTimerRef.current) {
                 clearTimeout(rateLimitTimerRef.current);
             }
@@ -118,6 +111,12 @@ export default function ChannelPage() {
 
     return (
         <div className="flex flex-col bg-background-chat border-app rounded-2xl w-full h-full overflow-hidden">
+            <TabManager
+                serverId={serverId}
+                channelId={channelId}
+                userId={userId}
+                onMessage={handleMessage}
+            />
             <div className="flex-1 p-4 min-h-0 overflow-y-auto">
                 {messages.length === 0 ? (
                     <div className="flex justify-center items-center h-full text-gray-500">
@@ -154,9 +153,7 @@ export default function ChannelPage() {
                                         showHeader ? "mt-4 py-1.5" : "py-0.5"
                                     }`}
                                     onMouseEnter={() =>
-                                        setHoveredMessageId(
-                                            parseInt(msg.messageId)
-                                        )
+                                        setHoveredMessageId(msg.messageId)
                                     }
                                     onMouseLeave={() =>
                                         setHoveredMessageId(null)
@@ -164,16 +161,16 @@ export default function ChannelPage() {
                                 >
                                     {/* Avatar - show only for first message in group */}
                                     {showHeader ? (
-                                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 rounded-full w-10 h-10 font-semibold text-white">
+                                        <div className="flex flex-shrink-0 justify-center items-center bg-gradient-to-br from-primary-100 to-background-300 mr-2 rounded-full w-10 h-10 font-semibold text-white">
                                             {initials}
                                         </div>
                                     ) : (
-                                        <div className="flex flex-shrink-0 justify-center items-center w-10">
+                                        <div className="flex flex-shrink-0 justify-center items-center w-12">
                                             {/* Timestamp shows on hover for grouped messages */}
                                             <span
                                                 className={`text-xs text-gray-400 transition-opacity ${
                                                     hoveredMessageId ===
-                                                    parseInt(msg.messageId)
+                                                    msg.messageId
                                                         ? "opacity-100"
                                                         : "opacity-0"
                                                 }`}
@@ -195,7 +192,7 @@ export default function ChannelPage() {
                                                 </span>
                                             </div>
                                         )}
-                                        <p className="text-muted-foreground text-sm break-words leading-relaxed">
+                                        <p className="text-md text-muted-foreground break-words tracking-wide">
                                             {msg.content}
                                         </p>
                                     </div>

@@ -40,7 +40,7 @@ export function InputField({ disabled = false }: InputFieldProps) {
                 </button>
             </div>
             <Input
-                className="relative flex-1 !bg-background-chat disabled:opacity-50 !m-0 !border-none focus:!border-none rounded-xl !ring-0 h-12 !text-muted-foreground placeholder:!text-muted-foreground/50 !text-lg transition-colors ease-fluid disabled:cursor-not-allowed"
+                className="relative flex-1 !bg-background-chat disabled:opacity-50 !m-0 !border-none focus:!border-none rounded-xl !ring-0 h-12 !text-muted-foreground placeholder:!text-muted-foreground/50 !text-lg !break-words transition-colors ease-fluid disabled:cursor-not-allowed"
                 placeholder={disabled ? "Rate limited..." : "Send message..."}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}

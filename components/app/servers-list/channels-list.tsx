@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { BellOff, MailOpen } from "lucide-react";
 
-export function ChannelsList() {
+export function ServersList() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -81,7 +81,7 @@ export function ChannelsList() {
             </div>
 
             {/* Left gradient mask */}
-            <div className="left-20 absolute inset-y-0 bg-gradient-to-r from-background-chat to-transparent w-[2%] pointer-events-none" />
+            <div className="left-31 absolute inset-y-0 bg-gradient-to-r from-background-chat to-transparent w-[2%] pointer-events-none" />
 
             {/* Right gradient mask */}
             <div className="right-0 absolute inset-y-0 bg-gradient-to-l from-background-chat to-transparent w-[2%] pointer-events-none" />

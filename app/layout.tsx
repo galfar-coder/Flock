@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import AuthProvider from "@/components/auth/auth-provider";
+import { WebSocketManagerProvider } from "@/components/websocket/websocket-manager";
 
 const zalandoSans = localFont({
     src: "./fonts/ZalandoSans-Regular.woff2",
@@ -24,16 +25,17 @@ export default async function RootLayout({
                 className={`${zalandoSans.className} antialiased`}
                 suppressHydrationWarning
             >
-                {/* @ts-expect-error - SessionProvider session prop type issue */}
                 <AuthProvider>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {children}
-                    </ThemeProvider>
+                    <WebSocketManagerProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            {children}
+                        </ThemeProvider>
+                    </WebSocketManagerProvider>
                 </AuthProvider>
             </body>
         </html>

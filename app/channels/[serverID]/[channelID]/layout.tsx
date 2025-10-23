@@ -1,7 +1,7 @@
 "use client";
 
 import { ChannelHeader } from "@/components/app/channel-header/channel-header";
-import { ChannelsList } from "@/components/app/channels-list/channels-list";
+import { ServersList } from "@/components/app/servers-list/channels-list";
 import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton";
 import { Sidebar } from "@/components/app/sidebar/sidebar";
 import { AddTab } from "@/components/app/tab/add-tab";
@@ -35,7 +35,7 @@ export default function AppLayout({
                     </div>
                 </div>
             </div>
-            <ChannelsList />
+            <ServersList />
         </section>
     );
 }
