@@ -168,7 +168,7 @@ export default function ChannelPage() {
                                         <div className="flex flex-shrink-0 justify-center items-center w-12">
                                             {/* Timestamp shows on hover for grouped messages */}
                                             <span
-                                                className={`text-xs text-gray-400 transition-opacity ${
+                                                className={`text-[10px] text-gray-400 transition-opacity ${
                                                     hoveredMessageId ===
                                                     msg.messageId
                                                         ? "opacity-100"

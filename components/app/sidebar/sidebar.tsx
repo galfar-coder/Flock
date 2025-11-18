@@ -5,7 +5,7 @@ import { TextChannel } from "./channels/text-channel";
 
 export function Sidebar() {
     const channels = [
-        { id: 1, name: "general", unread: 0 },
+        { id: 1, name: "general", unread: 5 },
         { id: 2, name: "random", unread: 3 },
         { id: 3, name: "announcements", unread: 0 },
         { id: 4, name: "support", unread: 1 },

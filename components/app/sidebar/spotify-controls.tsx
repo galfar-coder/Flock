@@ -18,6 +18,12 @@ export default function SpotifyControls() {
 
     const progressBarRef = useRef<HTMLDivElement>(null);
 
+    const songInfo = {
+        name: "My Song",
+        artist: "My Artist",
+        album: "My Album",
+    };
+
     // Format time as MM:SS
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -42,7 +48,7 @@ export default function SpotifyControls() {
         handleProgressClick(e);
     };
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleMouseMove = (e: MouseEvent) => {
         if (!isDragging || !progressBarRef.current) return;
         const rect = progressBarRef.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -91,9 +97,11 @@ export default function SpotifyControls() {
 
                 {/* Song Info */}
                 <div className="text-left">
-                    <h2 className="font-bold text-white text-sm">Given Up</h2>
-                    <p className="text-gray-400 text-xs">Linkin Park</p>
-                    <p className="text-gray-500 text-xs">Minutes to Midnight</p>
+                    <h2 className="font-bold text-white text-sm">
+                        {songInfo.name}
+                    </h2>
+                    <p className="text-gray-400 text-xs">{songInfo.artist}</p>
+                    <p className="text-gray-500 text-xs">{songInfo.album}</p>
                 </div>
             </div>
             <div className="w-full">
