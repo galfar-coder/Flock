@@ -6,11 +6,22 @@ import { IMessage } from "@/server/interfaces";
 import { usePathname } from "next/navigation";
 import { TabManager } from "@/components/websocket/tab-manager";
 
+const getTabId = () => {
+    if (typeof window === "undefined") return "";
+
+    let id = sessionStorage.getItem("chat_tab_id");
+    if (!id) {
+        id = `tab-${crypto.randomUUID()}`;
+        sessionStorage.setItem("chat_tab_id", id);
+    }
+    return id;
+};
+
 export default function ChannelPage() {
     const pathname = usePathname();
     const serverId = pathname.split("/")[2];
     const channelId = pathname.split("/")[3];
-    const userId = "1761";
+    const userId = "1761-" + getTabId();
 
     const [loading, setLoading] = useState(true);
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -136,7 +147,7 @@ export default function ChannelPage() {
                             ).toLocaleTimeString("en-US", {
                                 hour: "numeric",
                                 minute: "2-digit",
-                                hour12: true,
+                                hour12: false,
                             });
 
                             // Get initials from username

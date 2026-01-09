@@ -9,6 +9,17 @@ interface InputFieldProps {
     disabled?: boolean;
 }
 
+const getTabId = () => {
+    if (typeof window === "undefined") return "";
+
+    let id = sessionStorage.getItem("chat_tab_id");
+    if (!id) {
+        id = `tab-${crypto.randomUUID()}`;
+        sessionStorage.setItem("chat_tab_id", id);
+    }
+    return id;
+};
+
 export function InputField({ disabled = false }: InputFieldProps) {
     if (!socket.active) socket.connect();
 
@@ -20,7 +31,7 @@ export function InputField({ disabled = false }: InputFieldProps) {
             serverId: "1",
             channelId: "1",
             content: value,
-            authorId: "1761",
+            authorId: "1761-" + getTabId(),
         });
         setValue("");
     }

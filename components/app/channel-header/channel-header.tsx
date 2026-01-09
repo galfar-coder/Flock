@@ -22,7 +22,7 @@ export function ChannelHeader() {
                 <Users className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
                 <div className="relative">
                     <Input
-                        className="bg-background-app !m-0 !border-app focus:!border-primary-300 rounded-xl !ring-0 !text-sm transition-colors ease-fluid"
+                        className="!bg-background-app !m-0 border-app focus:!border-primary-300 rounded-xl !ring-0 !text-sm transition-colors ease-fluid"
                         placeholder="Search for users..."
                     />
                     <KbdGroup className="top-1/2 right-2 absolute -translate-y-1/2">

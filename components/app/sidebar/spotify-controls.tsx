@@ -7,14 +7,22 @@ import {
     SkipForward,
     Repeat,
     Shuffle,
+    ChevronDown,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import {
+    Collapsible,
+    CollapsibleTrigger,
+    CollapsibleContent,
+} from "@/components/ui/collapsible";
 
 export default function SpotifyControls() {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currentTime, setCurrentTime] = useState(80); // 01:20 in seconds
-    const [duration, setDuration] = useState(189); // 03:09 in seconds
+    const [currentTime, setCurrentTime] = useState(80);
+    const [duration, setDuration] = useState(189);
     const [isDragging, setIsDragging] = useState(false);
+
+    const [open, setOpen] = useState(true);
 
     const progressBarRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +32,6 @@ export default function SpotifyControls() {
         album: "My Album",
     };
 
-    // Format time as MM:SS
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
@@ -33,7 +40,6 @@ export default function SpotifyControls() {
             .padStart(2, "0")}`;
     };
 
-    // Handle progress bar click
     const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!progressBarRef.current) return;
         const rect = progressBarRef.current.getBoundingClientRect();
@@ -42,7 +48,6 @@ export default function SpotifyControls() {
         setCurrentTime(percentage * duration);
     };
 
-    // Handle progress bar drag
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
         handleProgressClick(e);
@@ -56,22 +61,18 @@ export default function SpotifyControls() {
         setCurrentTime(percentage * duration);
     };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
+    const handleMouseUp = () => setIsDragging(false);
 
     useEffect(() => {
-        if (isDragging) {
-            window.addEventListener("mousemove", handleMouseMove);
-            window.addEventListener("mouseup", handleMouseUp);
-            return () => {
-                window.removeEventListener("mousemove", handleMouseMove);
-                window.removeEventListener("mouseup", handleMouseUp);
-            };
-        }
+        if (!isDragging) return;
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseup", handleMouseUp);
+        };
     }, [isDragging]);
 
-    // Simulate playback
     useEffect(() => {
         if (!isPlaying) return;
         const interval = setInterval(() => {
@@ -89,36 +90,56 @@ export default function SpotifyControls() {
     const progress = (currentTime / duration) * 100;
 
     return (
-        <div className="flex flex-col justify-center items-center p-2 border-b border-b-subtle/20 w-full">
-            <div className="flex items-center gap-2 mb-4 w-full">
-                {/* Album Art */}
+        <Collapsible
+            open={open}
+            onOpenChange={setOpen}
+            className="border-b border-b-subtle/20 w-full"
+        >
+            {/* Header row (always visible) */}
+            <div className="flex items-center gap-2 p-2 w-full">
+                <div className="bg-background-app shadow-2xl rounded-lg size-12 overflow-hidden" />
 
-                <div className="bg-background-app shadow-2xl rounded-lg size-12 overflow-hidden"></div>
-
-                {/* Song Info */}
-                <div className="text-left">
-                    <h2 className="font-bold text-white text-sm">
+                <div className="min-w-0 text-left">
+                    <h2 className="font-bold text-white text-sm truncate">
                         {songInfo.name}
                     </h2>
-                    <p className="text-gray-400 text-xs">{songInfo.artist}</p>
-                    <p className="text-gray-500 text-xs">{songInfo.album}</p>
+                    <p className="text-gray-400 text-xs truncate">
+                        {songInfo.artist}
+                    </p>
+                    <p className="text-gray-500 text-xs truncate">
+                        {songInfo.album}
+                    </p>
                 </div>
+
+                <CollapsibleTrigger asChild>
+                    <button
+                        type="button"
+                        className="group inline-flex justify-center items-center ml-auto p-2 rounded-md text-gray-400 hover:text-white transition-colors cursor-pointer"
+                        aria-label={
+                            open
+                                ? "Collapse player controls"
+                                : "Expand player controls"
+                        }
+                    >
+                        <ChevronDown className="size-4 group-data-[state=open]:rotate-180 transition-transform" />
+                    </button>
+                </CollapsibleTrigger>
             </div>
-            <div className="w-full">
+
+            {/* Collapsible body */}
+            <CollapsibleContent className="px-2 pb-2 w-full overflow-hidden data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
                 {/* Progress Bar */}
-                <div className="mb-1">
+                <div className="my-2">
                     <div
                         ref={progressBarRef}
                         className="group relative bg-gray-700 rounded-full h-1 cursor-pointer"
                         onClick={handleProgressClick}
                         onMouseDown={handleMouseDown}
                     >
-                        {/* Progress */}
                         <div
                             className="absolute bg-gradient-to-r from-cyan-400 to-cyan-500 rounded-full h-full"
                             style={{ width: `${progress}%` }}
                         />
-                        {/* Thumb */}
                         <div
                             className="top-1/2 absolute bg-foreground opacity-100 shadow-lg rounded-full w-4 h-4 -translate-y-1/2"
                             style={{
@@ -136,7 +157,7 @@ export default function SpotifyControls() {
                 </div>
 
                 {/* Controls */}
-                <div className="flex justify-center items-center gap-6 mb-4">
+                <div className="flex justify-center items-center gap-6">
                     <button className="text-gray-400 hover:text-white transition-colors">
                         <Shuffle size={12} />
                     </button>
@@ -160,7 +181,7 @@ export default function SpotifyControls() {
                         <Repeat size={12} />
                     </button>
                 </div>
-            </div>
-        </div>
+            </CollapsibleContent>
+        </Collapsible>
     );
 }

@@ -20,17 +20,30 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8, "Password must be at least 8 characters long"),
-});
+const formSchema = z
+    .object({
+        email: z.string().email("Please enter a valid email address"),
+        username: z.string().min(3, "Username must be at least 3 characters"),
+        password: z
+            .string()
+            .min(8, "Password must be at least 8 characters long"),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
             email: "",
+            username: "",
             password: "",
+            confirmPassword: "",
         },
         resolver: zodResolver(formSchema),
     });
@@ -52,7 +65,7 @@ const LoginPage = () => {
             <div className="flex flex-col items-center bg-background/40 backdrop-blur-2xl p-8 border border-muted rounded-2xl w-full max-w-md">
                 <Logo />
                 <p className="mt-4 font-semibold text-xl tracking-tight">
-                    Log in to Flock
+                    Create an account
                 </p>
 
                 <Button className="gap-3 mt-8 border-2 border-primary-300 w-full cursor-pointer">
@@ -71,6 +84,27 @@ const LoginPage = () => {
                         className="space-y-4 w-full"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
+                        {/* Username Field (New) */}
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder="Username"
+                                            className="login-inputs"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Email Field */}
                         <FormField
                             control={form.control}
                             name="email"
@@ -89,6 +123,8 @@ const LoginPage = () => {
                                 </FormItem>
                             )}
                         />
+
+                        {/* Password Field */}
                         <FormField
                             control={form.control}
                             name="password"
@@ -128,29 +164,65 @@ const LoginPage = () => {
                                 </FormItem>
                             )}
                         />
+
+                        {/* Confirm Password Field (New) */}
+                        <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            <Input
+                                                type={
+                                                    showConfirmPassword
+                                                        ? "text"
+                                                        : "password"
+                                                }
+                                                placeholder="Confirm Password"
+                                                className="login-inputs"
+                                                {...field}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setShowConfirmPassword(
+                                                        !showConfirmPassword
+                                                    )
+                                                }
+                                                className="top-1/2 right-3 absolute disabled:opacity-50 text-muted hover:text-muted-foreground -translate-y-1/2 transform"
+                                            >
+                                                {showConfirmPassword ? (
+                                                    <EyeOff className="w-4 h-4" />
+                                                ) : (
+                                                    <Eye className="w-4 h-4" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <Button
                             type="submit"
                             className="mt-4 border-2 border-primary-300 w-full cursor-pointer"
                         >
-                            Continue with Email
+                            Create Account
                         </Button>
                     </form>
                 </Form>
 
                 <div className="space-y-5 mt-5">
-                    <Link
-                        href="/forgot"
-                        className="block text-muted-foreground text-sm text-center underline"
-                    >
-                        Forgot your password?
-                    </Link>
                     <p className="text-sm text-center">
-                        Don&apos;t have an account?
+                        Already have an account?
                         <Link
-                            href="/register"
+                            href="/login"
                             className="ml-1 text-muted-foreground underline"
                         >
-                            Create account
+                            Log in
                         </Link>
                     </p>
                 </div>
@@ -195,4 +267,4 @@ const GoogleLogo = () => (
     </svg>
 );
 
-export default LoginPage;
+export default RegisterPage;

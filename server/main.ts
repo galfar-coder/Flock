@@ -73,23 +73,32 @@ io.on("connection", (socket: Socket) => {
                 return;
             }
 
-            const fullMessage: IMessage = {
-                messageId: Math.random().toString(36).substring(2, 9),
-                serverId,
-                channelId,
-                content,
-                timestamp: Date.now(),
-                author: {
-                    id: authorId,
-                    username: `User-${authorId.toString().substring(0, 4)}`,
-                    avatarUrl: `https://example.com/avatars/${authorId}`,
-                },
-            };
-
-            io.to(roomName).emit("message", fullMessage);
+            // Splits Message content into multiple messages,
+            // one message content length limit is 2048 characters
+            const contentMaxLength = 2048;
+            const messages = [];
+            for (let i = 0; i < content.length; i += contentMaxLength) {
+                messages.push(content.slice(i, i + contentMaxLength));
+            }
+            for (const message of messages) {
+                const data = {
+                    messageId: Math.random().toString(36).substring(2, 9),
+                    serverId,
+                    channelId,
+                    content: message,
+                    timestamp: Date.now(),
+                    author: {
+                        id: authorId,
+                        username: `User-${authorId.toString().substring(10, 14)}`,
+                        avatarUrl: `https://example.com/avatars/${authorId}`,
+                    },
+                };
+                console.log(data);
+                io.to(roomName).emit("message", data);
+            }
 
             console.log(
-                `[${roomName}] New message from ${fullMessage.author.username}: ${fullMessage.content}`
+                `[${roomName}] New message from ${authorId}: ${content}`
             );
         } catch (err) {
             console.error(`Error in message handler:`, err);
