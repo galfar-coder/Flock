@@ -1,12 +1,12 @@
 "use client";
 
-import { ChannelHeader } from "@/components/app/channel-header/channel-header";
-import { ServersList } from "@/components/app/servers-list/channels-list";
-import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton";
-import { Sidebar } from "@/components/app/sidebar/sidebar";
-import { AddTab } from "@/components/app/tab/add-tab";
-import { Tab } from "@/components/app/tab/tab";
-import UserList from "@/components/app/users-list/users";
+import { ChannelHeader } from "@/components/app/channel-header/channel-header.tsx";
+import { ServersList } from "@/components/app/servers-list/servers-list.tsx";
+import { ChannelSkeleton } from "@/components/app/messages/channel-skeleton.tsx";
+import { Sidebar } from "@/components/app/sidebar/sidebar.tsx";
+import { AddTab } from "@/components/app/tab/add-tab.tsx";
+import { Tab } from "@/components/app/tab/tab.tsx";
+import UserList from "@/components/app/users-list/users.tsx";
 import { Suspense } from "react";
 
 export default function AppLayout({

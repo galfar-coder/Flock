@@ -1,9 +1,9 @@
-import { Hash } from "lucide-react";
+import {Hash, MessageSquareText} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {ExtendedChannel} from "@/types/CustomInterfaces.ts";
 
-export interface TextChannelProps {
+export interface ForumChannelProps {
     channel: ExtendedChannel;
     active: boolean;
     collapsed?: boolean;
@@ -11,7 +11,7 @@ export interface TextChannelProps {
     channelId: string;
 }
 
-export function TextChannel({ channel, collapsed, active, serverId, channelId }: TextChannelProps) {
+export function ForumChannel({ channel, collapsed, active, serverId, channelId }: ForumChannelProps) {
     return (
         <Link
             key={channel.channel.name}
@@ -31,7 +31,7 @@ export function TextChannel({ channel, collapsed, active, serverId, channelId }:
                 )}
             >
                 <div className={cn("flex items-center", !collapsed && "gap-2")}>
-                    <Hash
+                    <MessageSquareText
                         className={cn(
                             "w-4 h-4 text-gray-400",
                             // Highlight icon if unread (since badge might be hidden)
@@ -43,7 +43,7 @@ export function TextChannel({ channel, collapsed, active, serverId, channelId }:
                     {!collapsed && (
                         <span
                             className={cn(
-                                "text-sm whitespace-nowrap text-gray-300",
+                                "text-sm whitespace-nowrap",
                                 channel.unread > 0 && "font-semibold"
                             )}
                         >
