@@ -1,4 +1,4 @@
-import {Hash, MessageSquareText} from "lucide-react";
+import {MessageSquareText} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {ExtendedChannel} from "@/types/CustomInterfaces.ts";

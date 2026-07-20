@@ -11,7 +11,6 @@ import {SystemMessage} from "@/components/app/messages/system-message.tsx";
 import {ChatMessage} from "@/components/app/messages/chat-message.tsx";
 import {encodeBase64Safe} from "@/lib/utils/base64.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import {FlockFactory} from "@/lib/flock-factory.ts";
 import {API} from "@spacebarchat/spacebar-ts";
 import {enhanceMessage, FlockChannel, FlockMessage} from "@/lib/models.ts";
 

@@ -80,6 +80,7 @@ export function ChatMessage({
     } else {
         if (message.nonce?.toString().toLowerCase().startsWith("pax-")) clientName = "Pax";
         else if (message.nonce?.toString().toLowerCase().startsWith("papillon-")) clientName = "Papillon";
+        else if (message.nonce?.toString().toLowerCase().startsWith("skyline")) clientName = "Skyline";
     }
 
     const specialClients = [
@@ -229,7 +230,7 @@ function MessageHeader({ author, timeStr, editedTimestamp }: { author: FlockMemb
                         BOT
                     </span>
                         )}
-                    <span className="text-gray-400 text-xs font-medium">
+                    <span className="text-gray-400 text-xs font-medium px-1">
                         {timeStr}
                     </span>
                 </div>

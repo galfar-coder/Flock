@@ -11,7 +11,6 @@ import {
 } from "@/types/CustomInterfaces.ts";
 import {MessageType} from "@/types/WebSocketTypes.ts";
 import {clearTimeout} from "node:timers";
-import {FlockFactory} from "@/lib/flock-factory.ts";
 import {API} from "@spacebarchat/spacebar-ts";
 import {enhanceMessage, enhanceUser, FlockMember, FlockMessage, FlockPresence, FlockUser} from "@/lib/models.ts";
 
@@ -193,12 +192,12 @@ export function WebSocketManagerProvider({ children }: { children: React.ReactNo
                         const presences = d.presences as FlockPresence[];
 
                         const members: FlockUser[] = (d.members as API.Member[]).map(m => {
-                            return FlockFactory.createUser(
-                                m.user,
-                                m,
-                                d.guild_id,
-                                presences.find(p => p.user?.id === m.user.id)
-                            )
+                            return enhanceUser({
+                                user: m.user,
+                                memberContext: m,
+                                serverId: d.guild_id,
+                                presence: presences.find(p => p.user?.id === m.user.id)
+                            })
                         });
 
                         console.log("Members after stuff:", members);

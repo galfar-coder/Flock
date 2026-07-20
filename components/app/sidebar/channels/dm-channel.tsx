@@ -1,4 +1,3 @@
-import {APIDMChannel, APIGroupDMChannel} from "discord-api-types/v9";
 import {CDN_URL} from "@/lib/constants.ts";
 import Link from "next/link";
 import {cn} from "@/lib/utils.ts";
