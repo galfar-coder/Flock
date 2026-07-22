@@ -38,7 +38,7 @@ export default function ChannelPage() {
     const [serverChannels, setServerChannels] = useState<FlockChannel[]>([]);
 
     const chatContainerRef = useRef<HTMLDivElement>(null);
-    const { lastMessage, guildMembers, messageUpdate, messageDelete } = useWebSocket();
+    const { lastMessage, guildMembers, messageUpdate, messageDelete, markAsRead } = useWebSocket();
     const { user } = useAuth();
 
     useEffect(() => {
@@ -49,6 +49,14 @@ export default function ChannelPage() {
             });
         }
     }, [messages, loading]);
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            const latestMsg = messages[messages.length - 1];
+            if (latestMsg.id.includes("temp")) return;
+            markAsRead(channelId, latestMsg.id);
+        }
+    }, [messages, channelId, markAsRead]);
 
     useEffect(() => {
         if (serverId && serverId !== "@me") {

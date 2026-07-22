@@ -12,7 +12,18 @@ import {
 import {MessageType} from "@/types/WebSocketTypes.ts";
 import {clearTimeout} from "node:timers";
 import {API} from "@spacebarchat/spacebar-ts";
-import {enhanceMessage, enhanceUser, FlockMember, FlockMessage, FlockPresence, FlockUser} from "@/lib/models.ts";
+import {
+    enhanceMessage,
+    enhanceUser,
+    FlockMember,
+    FlockMessage,
+    FlockPresence,
+    FlockUser
+} from "@/lib/models.ts";
+import {spacebarFetch} from "@/lib/api-client.ts";
+import {read} from "fs";
+import {number} from "zod";
+import {GatewayReadState, GatewayReadStateChannel, GatewayReadStateGuild, GatewayReady} from "@/lib/GatewayTypes.ts";
 
 const GUILDS = 1 << 0;
 const GUILD_MEMBERS = 1 << 1;
@@ -29,6 +40,10 @@ const WebSocketContext = createContext<{
         id: string;
         channel_id: string;
     } | null;
+    isChannelUnread: (channelId: string) => boolean;
+    isServerUnread: (serverId: string) => boolean;
+    markAsRead: (channelId: string, messageId: string) => void;
+    getMentionCount: (channelId: string) => number;
 }>({
     requestMembers: () => {},
     guildMembers: {},
@@ -36,6 +51,10 @@ const WebSocketContext = createContext<{
     lastMessage: null,
     messageUpdate: null,
     messageDelete: null,
+    isChannelUnread: () => false,
+    isServerUnread: () => false,
+    markAsRead: () => {},
+    getMentionCount: () => 0,
 });
 
 export function WebSocketManagerProvider({ children }: { children: React.ReactNode }) {
@@ -53,6 +72,12 @@ export function WebSocketManagerProvider({ children }: { children: React.ReactNo
     const guildMemberChunkNonceRef = useRef<string>("");
     const guildMembersChunkCountRef = useRef<number>(0);
     const guildMembersReceivedChunkCountRef = useRef<number>(0);
+
+    const [readStates, setReadStates] = useState<Record<string, string>>({});
+    const [latestMessages, setLatestMessages] = useState<Record<string, string>>({});
+    const [channelToServer, setChannelToServer] = useState<Record<string, string>>({});
+
+    const [mentionCounts, setMentionCounts] = useState<Record<string, number>>({});
 
     const requestMembers = useCallback((guildId: string, channelId: string)=> {
         const socket = socketRef.current;
@@ -135,6 +160,35 @@ export function WebSocketManagerProvider({ children }: { children: React.ReactNo
                 if (op === 0) {
                     if (t === MessageType.READY) {
                         console.log("🚀 AUTH SUCCESS! Ready as:", d.user.username);
+
+                        console.log(d);
+                        const data = d as GatewayReady;
+
+                        // Parsing read states
+                        const rs: Record<string, string> = {};
+                        const mc: Record<string, number> = {};
+                        data.read_state?.entries?.forEach((r) => {
+                            if (r.last_message_id) rs[r.id] = r.last_message_id;
+
+                            if (r.mention_count > 0) mc[r.id] = r.mention_count;
+                        });
+                        setReadStates(rs);
+                        setMentionCounts(mc);
+
+                        const lm: Record<string, string> = {};
+                        const c2s: Record<string, string> = {};
+
+                        data.guilds?.forEach((g) => {
+                            g.channels?.forEach((c) => {
+                                if (c.last_message_id) {
+                                    lm[c.id] = c.last_message_id;
+                                }
+                                c2s[c.id] = g.id;
+                            })
+                        });
+                        setLatestMessages(lm);
+                        setChannelToServer(c2s);
+
                         setReady(true);
                     }
 
@@ -142,6 +196,13 @@ export function WebSocketManagerProvider({ children }: { children: React.ReactNo
                         console.log("📩 New Message Received:", d.content, d);
                         //console.log(d)
                         setLastMessage(enhanceMessage(d, d.guild_id));
+
+                        setLatestMessages(prev => ({...prev, [d.channel_id]: d.id}));
+                        if (d.guild_id) {
+                            setChannelToServer(prev => ({...prev, [d.channel_id]: d.guild_id}));
+                        }
+
+                        setMentionCounts(prev => ({...prev, [d.channel_id]: d.mention_count}));
                     }
 
                     if (t === MessageType.MESSAGE_UPDATE) {
@@ -238,8 +299,38 @@ export function WebSocketManagerProvider({ children }: { children: React.ReactNo
         }
     }, [token]);
 
+    const isChannelUnread = useCallback((channelId: string) => {
+        const latest = latestMessages[channelId];
+        const read = readStates[channelId];
+        if (!latest) return false;
+        return latest !== read;
+    }, [latestMessages, readStates]);
+
+    const isServerUnread = useCallback((serverId: string) => {
+        const channels = Object.keys(channelToServer).filter(c => channelToServer[c] === serverId);
+        return channels.some(c => isChannelUnread(c));
+    }, [channelToServer, isChannelUnread]);
+
+    const markAsRead = useCallback((channelId: string, messageId: string) => {
+        if (readStates[channelId] === messageId) return;
+
+        setReadStates(prev => ({...prev, [channelId]: messageId}));
+
+        spacebarFetch(`channels/${channelId}/messages/${messageId}/ack`, {
+            method: "POST",
+            body: JSON.stringify({ token: token }),
+        }).catch(err => console.error("Failed to ack message", err));
+    }, [readStates, token]);
+
+    const getMentionCount = useCallback((channelId: string) => {
+        return mentionCounts[channelId] || 0;
+    }, [mentionCounts]);
+
     return (
-        <WebSocketContext.Provider value={{ requestMembers, guildMembers, isReady, lastMessage, messageUpdate, messageDelete }}>
+        <WebSocketContext.Provider value={{
+            requestMembers, guildMembers, isReady, lastMessage, messageUpdate, messageDelete, isChannelUnread,
+            isServerUnread, markAsRead, getMentionCount
+        }}>
             {children}
         </WebSocketContext.Provider>
     )
