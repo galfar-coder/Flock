@@ -46,6 +46,8 @@ export type FlockGuild = API.Guild;
 
 export type FlockUserProfile = API.UserProfile;
 
+export type FlockUserSettings = API.UserSettings;
+
 export interface UserEnhanceProps {
     user: API.User,
     memberContext?: Partial<API.Member>,
