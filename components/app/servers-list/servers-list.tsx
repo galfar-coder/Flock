@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {API} from "@spacebarchat/spacebar-ts";
 import {FlockGuild} from "@/lib/models.ts";
+import {useWebSocket} from "@/components/websocket/websocket-manager.tsx";
 
 export function ServersList() {
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -14,6 +15,8 @@ export function ServersList() {
     const [scrollLeft, setScrollLeft] = useState(0);
 
     const [servers, setServers] = useState<FlockGuild[]>([]);
+
+    const { isServerUnread } = useWebSocket();
 
     useEffect(() => {
         async function getMyGuilds() {
@@ -105,15 +108,22 @@ export function ServersList() {
                         ? `${CDN_URL}/icons/${server.id}/${server.icon}.png`
                         : null;
 
+                    const unread = isServerUnread(server.id);
+
                     return (
-                        <Link
+                        <div
                             key={server.id+server.name}
-                            href={`/channels/${server.id}`}
-                            title={server.name}
-                            className="group relative flex items-center justify-center transition-all"
+                            className="group relative flex items-center transition-all"
                         >
-                            <div className="flex-shrink-0 bg-background-app rounded-3xl size-15 overflow-hidden hover: rounded-2xl transition-all
-                            border border-muted flex items-center justify-center group-hover:bg-primary-100/20">
+                            <div className={`absolute border-black border-1 top-0 right-0  w-4 h-4 bg-white rounded-full cursor-pointer transition-all duration-300 ${
+                                unread ? "h-2 opacity-100" : "h-0 opacity-0 group-hover:h-4 group-hover:w-4 group-hover:opacity-100"
+                            }`} />
+                            <Link
+                                href={`/channels/${server.id}`}
+                                title={server.name}
+                                className="flex-shrink-0 bg-background-app rounded-3xl size-15 overflow-hidden hover: rounded-2xl transition-all
+                            border border-muted flex items-center justify-center group-hover:bg-primary-100/20"
+                            >
                                 {iconUrl ? (
                                     <Image
                                         width={64}
@@ -127,8 +137,8 @@ export function ServersList() {
                                         {getGuildInitials(server.name)}
                                     </span>
                                 )}
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                     );
                 })}
 
