@@ -1,6 +1,12 @@
 "use client";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import Aurora from "@/components/Aurora";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -14,11 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import {API_URL} from "@/lib/constants.ts";
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -26,7 +29,11 @@ const formSchema = z.object({
 });
 
 const LoginPage = () => {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
             email: "",
@@ -35,8 +42,41 @@ const LoginPage = () => {
         resolver: zodResolver(formSchema),
     });
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({
+                   login: values.email,
+                   password: values.password,
+                   undelete: false
+               }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Handle API errors
+                throw new Error(data.message || "Failed to login");
+            }
+
+            if (data.token) {
+                // Save token and redirect
+                localStorage.setItem("flock_token", data.token);
+
+                // window.location to force full page refresh
+                window.location.href = "/channels/@me";
+            }
+        // @ts-expect-error Error can be of any type
+        } catch (err: never) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -54,6 +94,12 @@ const LoginPage = () => {
                 <p className="mt-4 font-semibold text-xl tracking-tight">
                     Log in to Flock
                 </p>
+
+                {error && (
+                    <div className="bg-destructive/15 mt-4 p-3 border border-destructive/30 rounded-lg w-full text-destructive text-sm text-center">
+                        {error}
+                    </div>
+                )}
 
                 <Button className="gap-3 mt-8 border-2 border-primary-300 w-full cursor-pointer">
                     <GoogleLogo />
@@ -132,6 +178,9 @@ const LoginPage = () => {
                             type="submit"
                             className="mt-4 border-2 border-primary-300 w-full cursor-pointer"
                         >
+                            {isLoading ? (
+                                <LoaderCircle className="mr-2 w-4 h-4 animate-spin" />
+                            ) : null}
                             Continue with Email
                         </Button>
                     </form>

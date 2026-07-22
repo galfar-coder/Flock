@@ -1,12 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Send, Plus } from "lucide-react";
-import { useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { io } from "socket.io-client";
+import {spacebarFetch} from "@/lib/api-client.ts";
+import {useParams} from "next/navigation";
 
-const socket = io("ws://localhost:6942");
+// const socket = io("ws://localhost:6942");
 
 interface InputFieldProps {
     disabled?: boolean;
+    onSend: (content: string) => void;
 }
 
 const getTabId = () => {
@@ -20,20 +23,23 @@ const getTabId = () => {
     return id;
 };
 
-export function InputField({ disabled = false }: InputFieldProps) {
-    if (!socket.active) socket.connect();
-
+export function InputField({ disabled = false, onSend }: InputFieldProps) {
     const [value, setValue] = useState("");
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-    function sendMessage() {
+    // Auto-resizing textarea
+    useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.style.height = "24px"; // Reset for correct calculation
+            textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`; // Resizing
+        }
+    }, [value]);
+
+    const handleSend = () => {
         if (!value.trim() || disabled) return;
-        socket.emit("message", {
-            serverId: "1",
-            channelId: "1",
-            content: value,
-            authorId: "1761-" + getTabId(),
-        });
+        onSend(value);
         setValue("");
+        if (textAreaRef.current) textAreaRef.current.style.height = "24px";
     }
 
     return (
@@ -55,15 +61,18 @@ export function InputField({ disabled = false }: InputFieldProps) {
                 placeholder={disabled ? "Rate limited..." : "Send message..."}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                onKeyDown={(e) =>
-                    e.key === "Enter" && !disabled && sendMessage()
-                }
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey && !disabled) {
+                        e.preventDefault();
+                        handleSend();
+                    }
+                }}
                 disabled={disabled}
             />
             <div className="flex justify-between items-center">
                 <button
                     className="hover:bg-primary-300 disabled:opacity-50 p-3 rounded-full transition-colors disabled:cursor-not-allowed"
-                    onClick={() => sendMessage()}
+                    onClick={handleSend}
                     disabled={disabled}
                 >
                     <Send size={20} />

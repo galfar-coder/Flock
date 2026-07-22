@@ -1,10 +1,9 @@
-import { Hash } from "lucide-react";
+import {MessageSquareText} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {ExtendedChannel} from "@/types/CustomInterfaces.ts";
-import {useWebSocket} from "@/components/websocket/websocket-manager.tsx";
 
-export interface TextChannelProps {
+export interface ForumChannelProps {
     channel: ExtendedChannel;
     active: boolean;
     collapsed?: boolean;
@@ -12,13 +11,7 @@ export interface TextChannelProps {
     channelId: string;
 }
 
-export function TextChannel({ channel, collapsed, active, serverId, channelId }: TextChannelProps) {
-    const { isChannelUnread, getMentionCount } = useWebSocket();
-    const unread = isChannelUnread(channelId);
-    const mentionCount = getMentionCount(channelId);
-
-    const displayCount = mentionCount > 99 ? "99+" : mentionCount.toString();
-
+export function ForumChannel({ channel, collapsed, active, serverId, channelId }: ForumChannelProps) {
     return (
         <Link
             key={channel.channel.name}
@@ -38,11 +31,11 @@ export function TextChannel({ channel, collapsed, active, serverId, channelId }:
                 )}
             >
                 <div className={cn("flex items-center", !collapsed && "gap-2")}>
-                    <Hash
+                    <MessageSquareText
                         className={cn(
                             "w-4 h-4 text-gray-400",
                             // Highlight icon if unread (since badge might be hidden)
-                            unread && "text-primary-300"
+                            channel.unread > 0 && "text-primary-300"
                         )}
                     />
 
@@ -50,8 +43,8 @@ export function TextChannel({ channel, collapsed, active, serverId, channelId }:
                     {!collapsed && (
                         <span
                             className={cn(
-                                "text-sm whitespace-nowrap text-muted-foreground",
-                                unread && "font-semibold text-white"
+                                "text-sm whitespace-nowrap",
+                                channel.unread > 0 && "font-semibold"
                             )}
                         >
                             {channel.channel.name}
@@ -59,10 +52,10 @@ export function TextChannel({ channel, collapsed, active, serverId, channelId }:
                     )}
                 </div>
 
-                {/* Hide Unread Badge when collapsed */}
-                {!collapsed && mentionCount > 0 && (
-                    <span className="flex justify-center items-center bg-primary-300 py-0.5 rounded-full min-w-[20px] text-background text-xs text-center">
-                        {displayCount}
+                {/* 4. Hide Unread Badge when collapsed */}
+                {!collapsed && channel.unread > 0 && (
+                    <span className="flex justify-center items-center bg-primary-300 py-0.5 rounded-full min-w-5 max-w-5 text-background text-xs text-center">
+                        {channel.unread}
                     </span>
                 )}
             </div>

@@ -11,10 +11,10 @@ const zalandoSans = localFont({
 
 export const metadata: Metadata = {
     title: "Flock",
-    description: "Modern & Different Chat app",
+    description: "Modern & Different Spacebar.chat Client app",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

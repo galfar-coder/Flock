@@ -3,12 +3,27 @@
 import { Headphones, Mic, Settings } from "lucide-react";
 import SpotifyControls from "./spotify-controls";
 import { cn } from "@/lib/utils";
+import {useAuth} from "@/components/auth/auth-provider.tsx";
+import {CDN_URL} from "@/lib/constants.ts";
+import Image from "next/image";
 
 type UserControlsProps = {
     collapsed: boolean;
 };
 
 export function UserControls({ collapsed }: UserControlsProps) {
+    const { user, loading } = useAuth();
+
+    if (loading || !user) {
+        return <div className="p-4 text-xs animate-pulse">Loading Profile...</div>
+    }
+
+    const avatarUrl = user.avatar
+        ? `${CDN_URL}/avatars/${user.id}/${user.avatar}.png`
+        : null;
+
+    const initials = user.username.substring(0,2).toUpperCase();
+
     return (
         <div
             className={cn(
@@ -37,14 +52,24 @@ export function UserControls({ collapsed }: UserControlsProps) {
                 >
                     {/* Avatar */}
                     <div className="flex justify-center items-center bg-primary-300 rounded-full min-w-8 size-8 font-semibold text-white text-sm">
-                        JD
+                        {avatarUrl ? (
+                            <Image
+                                width={64}
+                                height={64}
+                                src={avatarUrl}
+                                alt={user.username}
+                                className="object-cover rounded-full"
+                            />
+                        ): (
+                            initials
+                        )}
                     </div>
 
                     {/* User Text Info - Hide when collapsed */}
                     {!collapsed && (
                         <div className="flex-1 min-w-0 overflow-hidden">
                             <div className="font-medium text-sm truncate">
-                                John Doe
+                                {user.username}
                             </div>
                             <div className="text-gray-400 text-xs truncate">
                                 Online

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import type { IMessage } from "@/server/interfaces";
-import { useWebSocketManager } from "@/components/websocket/websocket-manager";
 
 interface TabManagerProps {
     serverId: string;
