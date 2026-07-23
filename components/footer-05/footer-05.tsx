@@ -1,43 +1,38 @@
 import { Separator } from "@/components/ui/separator";
-import {
-    DribbbleIcon,
-    GithubIcon,
-    TwitchIcon,
-    TwitterIcon,
-} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import {SiX, SiGithub, SiTwitch, SiDribbble } from "@icons-pack/react-simple-icons";
 
 const footerLinks = [
     {
         title: "Overview",
-        href: "#",
+        href: "/overview",
     },
     {
         title: "Features",
-        href: "#",
+        href: "/features",
     },
     {
         title: "Pricing",
-        href: "#",
+        href: "/pricing",
     },
     {
         title: "Careers",
-        href: "#",
+        href: "/careers",
     },
     {
         title: "Help",
-        href: "#",
+        href: "/faq",
     },
     {
         title: "Privacy",
-        href: "#",
+        href: "/privacy",
     },
 ];
 
 const Footer05Page = () => {
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col">
             <footer className="border-t">
                 <div className="max-w-(--breakpoint-xl) mx-auto">
                     <div className="flex flex-col justify-start items-center py-12">
@@ -70,26 +65,29 @@ const Footer05Page = () => {
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link href="/" target="_blank">
-                                Shadcn UI Blocks
+                                Flock Chat Team
                             </Link>
-                            . All rights reserved.
+                            . Licensed under GPL-3.0.
                         </span>
 
                         <div className="flex items-center gap-5 text-muted-foreground">
                             <Link href="#" target="_blank">
-                                <TwitterIcon className="w-5 h-5" />
+                                <SiX className="w-5 h-5" />
                             </Link>
                             <Link href="#" target="_blank">
-                                <DribbbleIcon className="w-5 h-5" />
+                                <SiDribbble className="w-5 h-5" />
                             </Link>
                             <Link href="#" target="_blank">
-                                <TwitchIcon className="w-5 h-5" />
+                                <SiTwitch className="w-5 h-5" />
                             </Link>
                             <Link href="#" target="_blank">
-                                <GithubIcon className="w-5 h-5" />
+                                <SiGithub className="w-5 h-5" />
                             </Link>
                         </div>
                     </div>
+                    <span className="text-muted-foreground">
+                            Not affiliated with Flock, the company, in any way, shape or form.
+                    </span>
                 </div>
             </footer>
         </div>

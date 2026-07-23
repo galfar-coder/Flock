@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, CirclePlay } from "lucide-react";
 import Image from "next/image";
@@ -12,13 +14,15 @@ export function Hero() {
                 <p className="mt-6 max-w-[60ch] text-xl">
                     Spend time with your friends, jump into voice calls, share
                     what you&apos;re working on, watch something together, or
-                    chat late into the night — Flock is the place built for
-                    genuine connection and easy communication.
+                    chat late into the night. Flock is the place built for
+                    genuine connection and easy communication.*
+                    <span className="text-sm text-gray-400"><br />*Flock is a Spacebar client</span>
                 </p>
                 <div className="flex items-center gap-4 mt-12">
                     <Button
                         size="lg"
                         className="rounded-full text-base cursor-pointer"
+                        onClick={() => { window.location.href = `/login`;}}
                     >
                         Get Started <ArrowUpRight className="w-5! h-5!" />
                     </Button>
